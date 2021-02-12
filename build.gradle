@@ -1,0 +1,63 @@
+plugins {
+	id "org.asciidoctor.jvm.convert" version "3.3.1"
+	id "org.asciidoctor.jvm.pdf" version "3.3.1"
+}
+
+description = "AsciiDoc Sample"
+
+configurations {
+	documentation
+}
+
+dependencies {
+}
+
+asciidoctor {
+	sourceDir  file('src/docs/asciidoc')
+	sources {
+		include "index.adoc"
+	}
+}
+
+asciidoctorPdf {
+	sourceDir  file('src/docs/asciidoc')
+	sources {
+		include "index.adoc"
+	}
+        attributes 'pdf-style' : 'src/docs/theme/KaiGenGothicKR-theme.yml', 
+                   'pdf-fontsdir' : 'src/docs/theme'
+}
+
+task zip(type: Zip) {
+	dependsOn asciidoctor, asciidoctorPdf
+	duplicatesStrategy "fail"
+	from(asciidoctorPdf.outputDir) {
+		into "reference/pdf"
+		rename "index.pdf", "${project.name}-reference.pdf"
+	}
+	from(asciidoctor.outputDir) {
+		into "reference/htmlsingle"
+	}
+}
+
+artifacts {
+	"documentation" zip
+}
+
+allprojects {
+        group "io.datadynamics.asciidoc"
+
+        repositories {
+                mavenCentral()
+                if (version.contains('-')) {
+                        maven { url "http://nexus.data-dynamics.io/repository/maven-public" }
+                }
+                if (version.endsWith('-SNAPSHOT')) {
+                        maven { url "http://nexus.data-dynamics.io/repository/maven-public" }
+                }
+        }
+
+        configurations.all {
+                resolutionStrategy.cacheChangingModulesFor 0, "minutes"
+        }
+}

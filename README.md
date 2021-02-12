@@ -1,10 +1,10 @@
-= AsciiDoc Project
+# AsciiDoc Project
 
 https://asciidoctor.github.io/asciidoctor-gradle-plugin/master/user-guide/
 
-== 문서 생성
+## 문서 생성
 
-AsciiDoc으로 작성한 문서를 생성하기 위해서 다음의 컴낻를 사용합니다.
+AsciiDoc으로 작성한 문서를 생성하기 위해서 다음의 커맨드를 사용합니다.
 
 ```
 gradle build --console=verbose --no-build-cache
@@ -14,4 +14,5 @@ gradle build --console=verbose --no-build-cache
 
 ```
 rm -rf .gradle
+rm -rf build
 ```

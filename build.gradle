@@ -24,7 +24,7 @@ asciidoctorPdf {
 	sources {
 		include "index.adoc"
 	}
-        attributes 'pdf-style' : 'src/docs/theme/KaiGenGothicKR-theme.yml', 
+        attributes 'pdf-style' : 'src/docs/theme/DataDynamics-theme.yml', 
                    'pdf-fontsdir' : 'src/docs/theme'
 }
 

@@ -50,10 +50,10 @@ allprojects {
         repositories {
                 mavenCentral()
                 if (version.contains('-')) {
-                        maven { url "http://nexus.data-dynamics.io/repository/maven-public" }
+                        maven { url "http://nexus.opencloudengine.org/repository/maven-public" }
                 }
                 if (version.endsWith('-SNAPSHOT')) {
-                        maven { url "http://nexus.data-dynamics.io/repository/maven-public" }
+                        maven { url "http://nexus.opencloudengine.org/repository/maven-public" }
                 }
         }
 

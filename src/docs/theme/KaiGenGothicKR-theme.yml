@@ -12,6 +12,8 @@ font:
       bold_italic: RobotoMono-BoldItalic.ttf
   fallbacks:
     - KaiGen Gothic KR
+    # NOTE Roboto Mono supplies U+200B (zero width space) inserted by Asciidoctor PDF for URL line breaking
+    - Roboto Mono
 page:
   background_color: ffffff
   layout: portrait
@@ -117,7 +119,7 @@ code:
   # LiberationMono carries extra gap below line
   #padding: [10, 10, 7.5, 10]
   #line_height: 1.45
-  font_family: $literal_font_family
+  font_family: $codespan_font_family
   #font_size: ceil($base_font_size)
   font_size: 9
   #padding: [$base_font_size, $code_font_size, $base_font_size, $code_font_size]
@@ -153,8 +155,8 @@ admonition:
   border_color: $base_border_color
   border_width: $base_border_width
 conum:
-  font_family: $literal_font_family
-  font_color: $literal_font_color
+  font_family: $codespan_font_family
+  font_color: $codespan_font_color
   font_size: $base_font_size
   line_height: 4 / 3
 image:

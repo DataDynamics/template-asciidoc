@@ -24,16 +24,26 @@ AsciiDoc으로 작성한 문서를 HTML과 PDF로 생성하는 템플릿 프로�
 ## 디렉터리 구조
 
 ```
-src/docs/
-├── asciidoc/
-│   ├── index.adoc          # 문서 헤더(속성)와 장 include 목록
-│   ├── chapters/           # 장(chapter)별 파일. 2단계 제목(==)으로 시작
-│   ├── images/             # 그림. 문서에서는 파일 이름만 적음 (:imagesdir: images)
-│   ├── examples/           # 코드 블록에 include 할 설정/소스 예제
-│   └── docinfo.html        # HTML 출력에만 덧붙는 스타일(한국어 글꼴)
-└── theme/
-    ├── DataDynamics-theme.yml   # PDF 테마. 기본 테마를 extends 하고 바꾸는 항목만 정의
-    └── *.ttf                    # PDF 에 내장할 글꼴
+.
+├── build.gradle                # Asciidoctor 설정, 공통 문서 속성, 배포 ZIP 태스크
+├── gradle.properties           # 문서 버전(version)과 Gradle 실행 옵션
+├── gradlew, gradlew.bat        # Gradle Wrapper 실행 스크립트
+├── gradle/wrapper/             # Gradle Wrapper 설정 (Gradle 9.8.0)
+└── src/docs/
+    ├── asciidoc/
+    │   ├── index.adoc          # 문서 헤더(속성)와 장 include 목록
+    │   ├── chapters/           # 장(chapter)별 파일. 2단계 제목(==)으로 시작
+    │   │   ├── introduction.adoc
+    │   │   ├── getting-started.adoc
+    │   │   ├── writing-guide.adoc
+    │   │   └── appendix.adoc
+    │   ├── images/             # 그림. 문서에서는 파일 이름만 적음 (:imagesdir: images)
+    │   ├── examples/           # 코드 블록에 include 할 설정/소스 예제
+    │   └── docinfo.html        # HTML 출력에만 덧붙는 스타일(한국어 글꼴)
+    └── theme/
+        ├── DataDynamics-theme.yml    # 기본 PDF 테마. 기본 테마를 extends 하고 바꾸는 항목만 정의
+        ├── KaiGenGothicKR-theme.yml  # 대체 PDF 테마 (KaiGen Gothic KR + Roboto Mono)
+        └── *.ttf                     # PDF 에 내장할 글꼴 (아래 "글꼴" 참고)
 ```
 
 ## 문서 생성
@@ -46,7 +56,17 @@ src/docs/
 
 * HTML: `build/docs/asciidoc/index.html`
 * PDF: `build/docs/asciidocPdf/index.pdf`
-* 배포 ZIP: `build/distributions/` (HTML, PDF 가 `<프로젝트명>-reference.*` 이름으로 담김)
+* 배포 ZIP: `build/distributions/<프로젝트명>-<버전>.zip`
+
+배포 ZIP 의 구성은 다음과 같습니다.
+
+```
+reference/
+├── pdf/<프로젝트명>-reference.pdf
+└── htmlsingle/
+    ├── <프로젝트명>-reference.html
+    └── images/
+```
 
 HTML 또는 PDF만 따로 생성하려면 `./gradlew asciidoctor` 또는 `./gradlew asciidoctorPdf`를 사용하십시오.
 
@@ -81,3 +101,22 @@ HTML 또는 PDF만 따로 생성하려면 `./gradlew asciidoctor` 또는 `./grad
 색상은 `brand` 섹션의 `primary`, `secondary`, `accent` 값만 바꾸면 제목, 링크, 표 머리글, 표지에 함께 반영됩니다.
 글꼴을 바꾸려면 `font.catalog` 에 글꼴 파일을 등록하고 `base.font_family` 를 수정하십시오.
 굵은 글꼴 파일이 따로 없는 글꼴은 제목이 굵게 표시되지 않으니 Regular/Bold 쌍이 있는 글꼴을 사용하십시오.
+
+다른 테마를 쓰려면 `build.gradle` 의 `asciidoctorPdf` 블록에서 `pdf-theme` 값을 바꿉니다.
+예를 들어 대체 테마를 쓰려면 `DataDynamics-theme.yml` 을 `KaiGenGothicKR-theme.yml` 로 바꾸십시오.
+
+## 글꼴
+
+`src/docs/theme/` 에는 두 PDF 테마의 `font.catalog` 가 참조하는 글꼴만 들어 있습니다.
+
+| 글꼴 | 파일 | 사용처 |
+|---|---|---|
+| KaiGen Gothic KR | `KaiGenGothicKR-Regular`, `-Bold`, `-Regular-Italic`, `-Bold-Italic` | 두 테마의 본문, 제목 |
+| D2Coding | `D2Coding`, `D2CodingBold` | DataDynamics 테마의 코드 |
+| Roboto Mono | `RobotoMono-Regular`, `-Bold`, `-Italic`, `-BoldItalic` | KaiGenGothicKR 테마의 코드 |
+
+Noto Serif 와 M+ 1mn 은 Asciidoctor PDF 에 포함된 글꼴을 사용합니다 (`pdf-fontsdir` 의 `GEM_FONTS_DIR`).
+DataDynamics 테마는 Noto Serif 를 대체 글꼴로 지정해, Asciidoctor PDF 가 URL 줄바꿈을 위해 넣는 제로폭 공백(U+200B)을 처리합니다.
+
+새 글꼴을 추가할 때는 파일을 `src/docs/theme/` 에 넣고 테마의 `font.catalog` 에 등록하십시오.
+catalog 에 등록하지 않은 글꼴 파일은 사용되지 않으니 저장소에 넣지 마십시오.

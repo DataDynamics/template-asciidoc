@@ -1,0 +1,49 @@
+[appendix]
+[[attributes-reference]]
+== 문서 속성 참조
+
+`index.adoc` 헤더에서 사용하는 주요 속성입니다.
+
+.문서 헤더 속성
+[cols="2,3", options="header"]
+|===
+| 속성 | 설명
+
+| `revnumber`, `revdate`, `revremark`
+| 표지와 머리글에 표시되는 버전, 날짜, 비고. 빌드 시 `build.gradle` 이 버전과 날짜를 덮어씁니다.
+
+| `lang`
+| 문서 언어. 하이픈 처리와 HTML `lang` 속성에 쓰입니다.
+
+| `sectnums`, `sectnumlevels`
+| 절 번호를 매기는 깊이.
+
+| `toc`, `toclevels`, `toc-title`
+| 목차 위치, 깊이, 제목.
+
+| `icons`
+| `font` 로 설정하면 경고 블록에 아이콘이 표시됩니다.
+
+| `experimental`
+| `kbd`, `menu`, `btn` 매크로를 켭니다.
+
+| `attribute-missing`
+| 정의되지 않은 속성을 만났을 때의 동작. `warn` 으로 두어 빌드에서 잡습니다.
+
+| `*-caption`
+| 참고, 경고, 표, 그림, 예제, 부록 등 자동 생성 캡션의 한국어 표기.
+|===
+
+[appendix]
+[[changelog]]
+== 변경 이력
+
+.변경 이력
+[cols="1,1,4", options="header"]
+|===
+| 버전 | 날짜 | 내용
+
+| 1.0.0
+| 2026-10-06
+| 템플릿 초안 작성
+|===

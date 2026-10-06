@@ -1,0 +1,51 @@
+[[introduction]]
+== 개요
+
+{project-name}는 AsciiDoc으로 작성한 문서를 HTML과 PDF로 생성하는 템플릿 프로젝트입니다.
+이 가이드는 템플릿을 내려받은 뒤 첫 문서를 만들고, 팀 규칙에 맞게 문서를 작성하는 방법을 설명합니다.
+
+[[introduction-audience]]
+=== 대상 독자
+
+이 문서는 다음 독자를 대상으로 합니다.
+
+* 제품 설명서, 운영 가이드, 설계 문서를 AsciiDoc으로 작성하려는 기술 문서 작성자
+* 문서 빌드를 CI 파이프라인에 연결하려는 개발자
+
+AsciiDoc 문법을 처음 접한다면 {asciidoctor-docs}/asciidoc/latest/syntax-quick-reference/[AsciiDoc 문법 빠른 참조]를 먼저 읽기를 권합니다.
+
+[[introduction-prerequisites]]
+=== 전제 조건
+
+문서를 생성하려면 다음 환경이 필요합니다.
+
+.필요한 소프트웨어
+[cols="2,1,4", options="header"]
+|===
+| 구성 요소 | 버전 | 비고
+
+| JDK
+| 17 이상
+| JDK 21을 권장합니다.
+
+| Gradle
+| 9.8
+| Gradle Wrapper가 포함되어 있어 별도 설치가 필요 없습니다.
+
+| Asciidoctor Gradle Plugin
+| 4.0.5
+| HTML 변환과 PDF 변환 플러그인을 함께 사용합니다.
+
+| AsciidoctorJ PDF
+| 2.3.27
+| PDF 테마는 `src/docs/theme` 에 있습니다.
+|===
+
+[[introduction-structure]]
+=== 문서 구성
+
+이 가이드는 다음 장으로 이루어져 있습니다.
+
+<<getting-started>>:: 문서를 생성하고 새 장을 추가하는 방법을 설명합니다.
+<<writing-guide>>:: 팀에서 지키는 작성 규칙과 자주 쓰는 AsciiDoc 요소를 예제와 함께 보여 줍니다.
+<<attributes-reference>>:: 문서 헤더에서 사용하는 속성의 의미를 정리합니다.

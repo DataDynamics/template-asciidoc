@@ -1,0 +1,82 @@
+[[getting-started]]
+== 시작하기
+
+[[getting-started-build]]
+=== 문서 생성
+
+프로젝트 루트에서 다음 명령을 실행하면 HTML, PDF, 배포용 ZIP 파일을 한 번에 생성합니다.
+
+[source,console]
+----
+$ ./gradlew build
+----
+
+HTML 또는 PDF만 따로 생성하려면 해당 태스크만 실행합니다.
+
+[source,console]
+----
+$ ./gradlew asciidoctor      # HTML
+$ ./gradlew asciidoctorPdf   # PDF
+----
+
+생성 결과는 다음 위치에 만들어집니다.
+
+.생성 결과 위치
+[cols="1,3", options="header"]
+|===
+| 형식 | 경로
+
+| HTML
+| `build/docs/asciidoc/index.html`
+
+| PDF
+| `build/docs/asciidocPdf/index.pdf`
+
+| 배포 ZIP
+| `build/distributions/`
+|===
+
+TIP: Gradle 캐시 때문에 변경 사항이 반영되지 않으면 `./gradlew clean build` 로 다시 생성하십시오.
+
+[[getting-started-version]]
+=== 버전과 날짜 반영
+
+문서 표지와 머리글에 표시되는 버전은 `gradle.properties` 의 `version` 값을 따릅니다.
+빌드 시점의 날짜가 `revdate` 속성으로 함께 전달되므로 문서 헤더의 값을 직접 고칠 필요가 없습니다.
+
+[source,properties]
+.gradle.properties
+----
+version=1.0.0
+----
+
+[[getting-started-new-chapter]]
+=== 새 장 추가하기
+
+장(chapter)은 `src/docs/asciidoc/chapters` 디렉터리에 파일 하나씩 둡니다.
+
+. `chapters/` 아래에 새 파일을 만듭니다. 파일 이름은 소문자와 하이픈만 사용합니다.
+. 파일 첫 줄에 앵커와 2단계 제목을 씁니다.
+. `index.adoc` 에 `include` 지시문을 추가합니다.
+
+[source,asciidoc]
+.chapters/deployment.adoc
+----
+[[deployment]] // <1>
+== 배포 // <2>
+
+배포 절차를 설명합니다.
+----
+<1> 다른 문서에서 `+<<deployment>>+` 로 참조할 때 쓰는 앵커입니다. 파일 이름과 같게 짓습니다.
+<2> 장 제목은 항상 2단계(`==`)로 시작합니다. 1단계 제목은 문서 제목 하나뿐입니다.
+
+[source,asciidoc]
+.index.adoc
+----
+\include::chapters/writing-guide.adoc[]
+
+\include::chapters/deployment.adoc[]
+----
+
+IMPORTANT: 깨진 상호 참조, 정의되지 않은 속성, 없는 include 파일은 빌드 실패로 처리됩니다.
+빌드 로그의 `asciidoctor: WARNING` 메시지를 확인해 원인을 바로잡으십시오.

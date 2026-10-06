@@ -1,0 +1,148 @@
+[[writing-guide]]
+== 작성 가이드
+
+이 장은 팀에서 지키는 작성 규칙과 자주 쓰는 AsciiDoc 요소를 모아 놓았습니다.
+새 요소를 쓰기 전에 이 장에서 같은 요소가 HTML과 PDF에서 어떻게 보이는지 먼저 확인하십시오.
+
+[[writing-guide-rules]]
+=== 기본 규칙
+
+* 한 줄에 한 문장을 씁니다. 줄바꿈은 출력에 영향을 주지 않으며 변경 이력을 읽기 쉽게 만듭니다.
+* 제목은 명사형으로 짧게 씁니다. 제목 끝에 마침표를 찍지 않습니다.
+* 파일, 디렉터리, 명령, 속성 이름은 `+`코드 서식`+` 처럼 백틱으로 감쌉니다.
+* 반복해서 쓰는 이름이나 URL은 `index.adoc` 에 속성으로 정의하고 `+{project-name}+` 처럼 참조합니다.
+* 모든 장과 절에는 `+[[anchor-id]]+` 앵커를 붙입니다. 앵커는 `장-절` 형태로 짓습니다.
+
+[[writing-guide-admonitions]]
+=== 경고 블록
+
+독자가 놓치면 안 되는 내용은 경고 블록으로 강조합니다. 종류별 용도는 다음과 같습니다.
+
+NOTE: 본문을 보충하는 부가 정보입니다.
+
+TIP: 작업을 더 쉽게 하는 요령입니다.
+
+IMPORTANT: 반드시 따라야 하는 사항입니다.
+
+WARNING: 지키지 않으면 데이터 손실이나 장애가 생길 수 있습니다.
+
+CAUTION: 되돌리기 어려운 작업을 하기 전에 읽어야 하는 내용입니다.
+
+여러 문단이 필요하면 블록 형태로 씁니다.
+
+[NOTE]
+.제목이 있는 참고
+====
+경고 블록에는 제목을 붙일 수 있습니다.
+
+목록이나 코드 블록도 안에 넣을 수 있습니다.
+====
+
+[[writing-guide-code]]
+=== 코드와 콜아웃
+
+코드 블록에는 언어와 제목을 함께 지정합니다. 설명이 필요한 줄에는 콜아웃 번호를 붙입니다.
+
+[source,java]
+.DocumentService.java
+----
+@Service
+public class DocumentService {
+
+    private final DocumentRepository repository; // <1>
+
+    public Document publish(Long id) {
+        Document document = repository.findById(id)
+            .orElseThrow(() -> new DocumentNotFoundException(id)); // <2>
+        document.publish();
+        return repository.save(document);
+    }
+}
+----
+<1> 저장소는 생성자 주입으로 받습니다.
+<2> 문서가 없으면 404로 변환되는 예외를 던집니다.
+
+셸 명령은 `console` 언어로 쓰고 프롬프트 `$` 를 앞에 붙입니다.
+
+[source,console]
+----
+$ ./gradlew asciidoctorPdf
+----
+
+긴 설정 파일은 별도 파일로 두고 필요한 부분만 태그로 가져옵니다.
+예제가 실제 파일과 어긋나는 일을 막을 수 있습니다.
+
+[source,yaml]
+.examples/application.yml 의 datasource 태그
+----
+include::../examples/application.yml[tag=datasource]
+----
+
+[[writing-guide-tables]]
+=== 표
+
+표에는 항상 제목과 머리글 행을 둡니다. 열 너비는 `cols` 로 지정합니다.
+
+.지원하는 출력 형식
+[cols="1,2,3", options="header"]
+|===
+| 형식 | 변환기 | 용도
+
+| HTML
+| Asciidoctor
+| 웹 게시, 사내 위키 연동
+
+| PDF
+| Asciidoctor PDF
+| 인쇄, 외부 전달
+
+| DocBook
+| Asciidoctor
+| 다른 출판 도구와 연계
+|===
+
+[[writing-guide-images]]
+=== 그림
+
+그림 파일은 `src/docs/asciidoc/images` 에 두고 파일 이름만 적습니다.
+제목을 붙이면 그림 번호가 자동으로 매겨집니다.
+
+.문서 생성 흐름
+image::build-flow.svg[문서 생성 흐름, width=560]
+
+[[writing-guide-xref]]
+=== 상호 참조와 링크
+
+문서 안의 다른 절은 앵커로 참조합니다. 예를 들어 <<getting-started-new-chapter>> 절을 보십시오.
+링크 텍스트를 직접 지정할 수도 있습니다. 예를 들어 <<writing-guide-tables,표 작성 규칙>>을 보십시오.
+
+외부 링크는 URL 뒤에 대괄호로 표시할 텍스트를 씁니다. 예를 들어 {pdf-theme-docs}/[Asciidoctor PDF 테마 가이드]를 참고하십시오.
+
+보충 설명은 각주로 씁니다.footnote:[각주는 HTML에서는 문서 끝에, PDF에서는 해당 페이지 아래에 표시됩니다.]
+
+[[writing-guide-ui]]
+=== 키보드, 메뉴, 버튼
+
+사용자 인터페이스 요소는 전용 매크로로 씁니다. 문서 헤더에 `:experimental:` 속성이 있어야 동작합니다.
+
+* 단축키: kbd:[Ctrl+Shift+P]
+* 메뉴 경로: menu:File[Export > PDF]
+* 버튼: btn:[저장]
+
+[[writing-guide-blocks]]
+=== 예제, 사이드바, 인용
+
+.요청 예제
+====
+예제 블록은 번호가 매겨지며 본문과 구분되는 테두리로 표시됩니다.
+====
+
+.알아 두기
+****
+사이드바는 본문 흐름과 떨어진 배경 지식을 담을 때 씁니다.
+****
+
+[quote, Asciidoctor 문서 팀]
+____
+글쓰기에 집중하십시오. 서식은 도구가 맡습니다.
+____

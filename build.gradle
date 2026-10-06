@@ -1,63 +1,68 @@
 plugins {
-	id "org.asciidoctor.jvm.convert" version "3.3.1"
-	id "org.asciidoctor.jvm.pdf" version "3.3.1"
+	id 'base'
+	id 'org.asciidoctor.jvm.convert' version '4.0.5'
+	id 'org.asciidoctor.jvm.pdf' version '4.0.5'
 }
 
-description = "AsciiDoc Sample"
+group = 'io.datadynamics.asciidoc'
+description = 'AsciiDoc Sample'
+
+repositories {
+	mavenCentral()
+}
 
 configurations {
 	documentation
 }
 
-dependencies {
+asciidoctorj {
+	version = '3.0.1'
+	modules {
+		pdf {
+			version '2.3.27'
+		}
+	}
+	attributes 'source-highlighter': 'rouge'
 }
 
 asciidoctor {
-	sourceDir  file('src/docs/asciidoc')
+	sourceDir file('src/docs/asciidoc')
 	sources {
-		include "index.adoc"
+		include 'index.adoc'
 	}
+	baseDirFollowsSourceDir()
 }
 
 asciidoctorPdf {
-	sourceDir  file('src/docs/asciidoc')
+	sourceDir file('src/docs/asciidoc')
 	sources {
-		include "index.adoc"
+		include 'index.adoc'
 	}
-        attributes 'pdf-style' : 'src/docs/theme/DataDynamics-theme.yml', 
-                   'pdf-fontsdir' : 'src/docs/theme'
+	baseDirFollowsSourceDir()
+	attributes 'pdf-theme': file('src/docs/theme/DataDynamics-theme.yml').absolutePath,
+	           'pdf-fontsdir': file('src/docs/theme').absolutePath
 }
 
-task zip(type: Zip) {
-	dependsOn asciidoctor, asciidoctorPdf
-	duplicatesStrategy "fail"
-	from(asciidoctorPdf.outputDir) {
-		into "reference/pdf"
-		rename "index.pdf", "${project.name}-reference.pdf"
+def zipDocs = tasks.register('zip', Zip) {
+	dependsOn tasks.named('asciidoctor'), tasks.named('asciidoctorPdf')
+	duplicatesStrategy = DuplicatesStrategy.FAIL
+	from(tasks.named('asciidoctorPdf').map { it.outputDir }) {
+		into 'reference/pdf'
+		rename 'index.pdf', "${project.name}-reference.pdf"
 	}
-	from(asciidoctor.outputDir) {
-		into "reference/htmlsingle"
+	from(tasks.named('asciidoctor').map { it.outputDir }) {
+		into 'reference/htmlsingle'
 	}
 }
 
 artifacts {
-	"documentation" zip
+	documentation zipDocs
 }
 
-allprojects {
-        group "io.datadynamics.asciidoc"
+tasks.named('build') {
+	dependsOn zipDocs
+}
 
-        repositories {
-                mavenCentral()
-                if (version.contains('-')) {
-                        maven { url "http://nexus.opencloudengine.org/repository/maven-public" }
-                }
-                if (version.endsWith('-SNAPSHOT')) {
-                        maven { url "http://nexus.opencloudengine.org/repository/maven-public" }
-                }
-        }
-
-        configurations.all {
-                resolutionStrategy.cacheChangingModulesFor 0, "minutes"
-        }
+configurations.configureEach {
+	resolutionStrategy.cacheChangingModulesFor 0, 'minutes'
 }

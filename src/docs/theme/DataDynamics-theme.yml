@@ -54,6 +54,8 @@ font:
   fallbacks:
     # NOTE M+ 1p doesn't support all CJK characters, but it at least has some coverage
     - NotoSansKorean
+    # NOTE NotoSerif supplies U+200B (zero width space) inserted by Asciidoctor PDF for URL line breaking
+    - NotoSerif
 brand:
   primary_color: 005498
 page:

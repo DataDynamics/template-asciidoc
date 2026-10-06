@@ -99,7 +99,7 @@ horizontal_rhythm: $base_line_height_length
 link:
   font_color: 428bca
 # literal is currently used for inline monospaced in prose and table cells
-literal:
+codespan:
   font_color: b12146
   font_family: D2Coding
   font_size: 9
@@ -183,7 +183,7 @@ code:
   border_color: cccccc
   border_radius: $base_border_radius
   border_width: 0.75
-blockquote:
+quote:
   font_color: $base_font_color
   font_size: $base_font_size_large
   border_width: 5
@@ -237,7 +237,7 @@ thematic_break:
 description_list:
   term_font_style: italic
   description_indent: $horizontal_rhythm * 1.25
-outline_list:
+list:
   indent: $horizontal_rhythm * 1.5
   # NOTE item_spacing applies to list items that do not have complex content
   item_spacing: $vertical_rhythm / 2

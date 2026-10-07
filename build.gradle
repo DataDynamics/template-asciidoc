@@ -5,7 +5,12 @@ plugins {
 }
 
 group = 'io.datadynamics.asciidoc'
-description = 'AsciiDoc Sample'
+description = 'AsciiDoc 문서를 HTML 과 PDF 로 생성하는 문서 템플릿'
+
+// 도구 버전. 문서 본문(introduction.adoc)의 "필요한 소프트웨어" 표에도 속성으로 전달됩니다.
+// Asciidoctor Gradle Plugin 버전은 plugins 블록에서 바꾸면 자동으로 반영됩니다.
+def asciidoctorjVersion = '3.0.1'
+def asciidoctorjPdfVersion = '2.3.27'
 
 repositories {
 	mavenCentral()
@@ -22,13 +27,17 @@ def docAttributes = [
 	'revnumber'        : project.version,
 	'revdate'          : java.time.LocalDate.now().toString(),
 	'attribute-missing': 'warn',
+	'gradle-version'   : gradle.gradleVersion,
+	'asciidoctor-gradle-plugin-version': org.asciidoctor.gradle.jvm.AsciidoctorJPlugin.package.implementationVersion ?: 'unknown',
+	'asciidoctorj-version'    : asciidoctorjVersion,
+	'asciidoctorj-pdf-version': asciidoctorjPdfVersion,
 ]
 
 asciidoctorj {
-	version = '3.0.1'
+	version = asciidoctorjVersion
 	modules {
 		pdf {
-			version '2.3.27'
+			version asciidoctorjPdfVersion
 		}
 	}
 	attributes docAttributes

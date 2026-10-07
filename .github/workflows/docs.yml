@@ -1,0 +1,33 @@
+name: Docs
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      # Gradle Wrapper 검증과 의존성 캐시를 함께 처리합니다.
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Build HTML and PDF
+        run: ./gradlew build
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: reference-docs
+          path: build/distributions/*.zip
+          if-no-files-found: error

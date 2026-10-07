@@ -12,23 +12,34 @@ AsciiDoc으로 작성한 문서를 HTML과 PDF로 생성하는 템플릿 프로�
 * JDK 17 이상 (JDK 21 권장)
 * Gradle은 별도로 설치할 필요 없음 (Gradle Wrapper 포함)
 
-## 구성
+## 구성 요소와 버전 관리
 
-| 구성 요소 | 버전 |
+| 구성 요소 | 버전을 바꾸는 곳 |
 |---|---|
-| Gradle (Wrapper) | 9.8.0 |
-| Asciidoctor Gradle Plugin | 4.0.5 |
-| AsciidoctorJ | 3.0.1 |
-| AsciidoctorJ PDF | 2.3.27 |
+| Gradle (Wrapper) | `./gradlew wrapper --gradle-version <버전> --gradle-distribution-sha256-sum <SHA-256>` |
+| Asciidoctor Gradle Plugin | `build.gradle` 의 `plugins` 블록 |
+| AsciidoctorJ, AsciidoctorJ PDF | `build.gradle` 의 `asciidoctorjVersion`, `asciidoctorjPdfVersion` |
+
+현재 버전은 생성된 문서의 "전제 조건" 절에 표시됩니다.
+`build.gradle` 이 버전 값을 문서 속성(`gradle-version`, `asciidoctorj-pdf-version` 등)으로 넘기므로 문서 본문은 따로 고칠 필요가 없습니다.
+
+Gradle Wrapper 는 `gradle-wrapper.properties` 의 `distributionSha256Sum` 으로 내려받은 배포판을 검증합니다.
+SHA-256 값은 https://gradle.org/release-checksums/ 에서 확인하십시오.
+
+Dependabot(`.github/dependabot.yml`)이 Gradle 플러그인과 GitHub Actions 의 새 버전을 매주 확인해 PR 을 만듭니다.
 
 ## 디렉터리 구조
 
 ```
 .
+├── .github/
+│   ├── workflows/docs.yml      # push, PR 마다 문서를 빌드하고 ZIP 을 결과물로 올리는 CI
+│   └── dependabot.yml          # 의존성 버전 자동 업데이트
+├── .gitattributes              # 줄바꿈(gradlew 는 LF), 바이너리 파일 지정
 ├── build.gradle                # Asciidoctor 설정, 공통 문서 속성, 배포 ZIP 태스크
 ├── gradle.properties           # 문서 버전(version)과 Gradle 실행 옵션
 ├── gradlew, gradlew.bat        # Gradle Wrapper 실행 스크립트
-├── gradle/wrapper/             # Gradle Wrapper 설정 (Gradle 9.8.0)
+├── gradle/wrapper/             # Gradle Wrapper 설정 (버전, 체크섬)
 └── src/docs/
     ├── asciidoc/
     │   ├── index.adoc          # 문서 헤더(속성)와 장 include 목록

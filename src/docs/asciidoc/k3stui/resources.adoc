@@ -1,0 +1,59 @@
+[[k3stui-resources]]
+== 리소스 관리
+
+[[k3stui-resources-dashboard]]
+=== 대시보드
+
+대시보드는 클러스터 요약, 호스트 상태, 노드 사용량, 문제 Pod, 최근 Warning 이벤트를 한 화면에 보여 줍니다(<<k3stui-overview>> 의 그림 참고).
+원격 클러스터에서는 호스트 패널 대신 연결 정보(배포판·context·API 서버·kubeconfig)를 보여 줍니다.
+
+[[k3stui-resources-workloads]]
+=== 워크로드
+
+Pod 목록에는 상태, 재시작 횟수, metrics-server 기준 CPU·메모리 사용량이 함께 표시됩니다.
+
+.Workloads 탭 — Pods
+image::k3stui/workloads-pods.png[Pod 목록,pdfwidth=100%]
+
+Pod 에서 kbd:[l] 을 누르면 로그를 실시간으로 따라가고, kbd:[y] 를 누르면 YAML 을 보여 줍니다.
+
+.Pod 로그
+image::k3stui/pod-logs.png[Pod 로그,pdfwidth=100%]
+
+Deployment 에서 kbd:[S] 를 누르면 replicas 를 입력받아 스케일합니다.
+
+.스케일 다이얼로그
+image::k3stui/dialog-scale.png[스케일 다이얼로그,pdfwidth=70%]
+
+[[k3stui-resources-network]]
+=== 네트워크
+
+Service 나 Pod 에서 kbd:[p] 로 시작한 포트포워딩은 *Port-forwards* 하위 탭에서 관리합니다.
+포트포워딩은 기본으로 `127.0.0.1` 에만 바인딩하며, {tool} 을(를) 종료하면 모두 중지됩니다.
+
+.Network 탭 — Port-forwards
+image::k3stui/network-portforwards.png[포트포워딩 목록,pdfwidth=100%]
+
+Cilium 하위 탭에서는 에이전트 Pod 의 `cilium-dbg status` 를 바로 확인할 수 있습니다.
+
+[[k3stui-resources-storage]]
+=== 스토리지와 설정 리소스
+
+* *Storage* 탭은 PVC, PV, StorageClass 를 보여 줍니다. local-path 저장 경로의 실제 디스크 사용량을 PVC 별로 계산합니다
+  (`rancher.io/local-path` StorageClass 가 있고 API 서버가 로컬일 때).
+* *Config* 탭은 ConfigMap, Secret, ServiceAccount 와 RBAC 리소스를 보여 줍니다.
+  Secret 에서 kbd:[v] 로 값을 보면 감사 로그에 기록됩니다.
+
+[[k3stui-resources-helm]]
+=== Helm
+
+*Helm* 탭은 릴리스 목록과 K3s 의 HelmChart·HelmChartConfig 를 보여 줍니다.
+릴리스에서 values, 전체 values, manifest, 이력을 보고 롤백·삭제할 수 있습니다. `helm` 이 PATH 에 있어야 합니다.
+
+[[k3stui-resources-actions]]
+=== 리소스 작업
+
+모든 리소스에서 kbd:[d] 또는 kbd:[Enter] 로 상세, kbd:[y] 로 YAML, kbd:[e] 로 편집, kbd:[x] 로 삭제합니다.
+리소스별 작업 키는 <<k3stui-appendix-keys>> 에 모아 두었습니다.
+
+IMPORTANT: `kube-system` 같은 보호 네임스페이스의 리소스를 삭제·변경하려면 리소스 이름을 다시 입력해야 합니다(<<k3stui-safety>>).

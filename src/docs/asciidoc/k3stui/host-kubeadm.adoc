@@ -1,0 +1,32 @@
+[[k3stui-host-kubeadm]]
+== 노드 관리: kubeadm
+
+kubeadm 컨트롤 플레인 노드에서 root 로 실행하면 Host 탭이 다음처럼 구성됩니다.
+
+[cols="1,3,2", options="header"]
+|===
+| 하위 탭 | 내용 | 작업 키
+
+| Service | kubelet 서비스 상태, kubeadm·kubelet 버전, API 서버 상태, etcd 데이터 경로, 디스크 사용량 | kbd:[l] 로그, kbd:[r] 재시작, kbd:[c] 인증서 만료 확인, kbd:[J] 노드 추가 명령
+| kubelet config | `/var/lib/kubelet/config.yaml` | kbd:[v] 보기, kbd:[e] 편집
+| Static Pods | `/etc/kubernetes/manifests` 의 kube-apiserver, etcd 등 | kbd:[v] 보기, kbd:[e] 편집
+| Certificates | `pki/`, `pki/etcd/`, kubeconfig 안의 클라이언트 인증서, kubelet 인증서 | kbd:[v] 상세, kbd:[R] 갱신
+| Backups | etcd 스냅샷과 PKI 압축본 | kbd:[b] 백업, kbd:[R] 복원 안내, kbd:[x] 삭제
+| Containers, Images | `crictl` (런타임 소켓은 kubelet 설정에서 자동으로 찾습니다) | K3s 와 같음
+|===
+
+[[k3stui-host-kubeadm-notes]]
+=== 동작 방식과 주의할 점
+
+etcd 스냅샷:: 호스트에 `etcdctl` 이 있으면 그것을, 없으면 실행 중인 etcd 컨테이너 안의 `etcdctl` 을 씁니다.
+스냅샷과 함께 `/etc/kubernetes/pki` 를 `<백업>.pki.tar.gz` 로 저장합니다.
+etcd 복원:: static Pod 를 내리고 데이터 디렉터리를 바꾸는 위험한 절차라 자동으로 하지 않습니다.
+kbd:[R] 을 누르면 해당 스냅샷 경로가 들어간 단계별 명령을 보여 줍니다.
+static Pod 편집:: 저장 전 원본을 `<backup.dir>/manifests/` 에 백업합니다.
+인증서 갱신:: 갱신 후 컨트롤 플레인 컨테이너를 멈추면 kubelet 이 바로 다시 띄웁니다. 그동안 API 서버가 잠시 끊깁니다.
+노드 추가 명령:: 볼 때마다 새 부트스트랩 토큰(기본 24시간 유효)을 만들므로 확인을 거치고 감사 로그에 남깁니다.
+워커 노드:: API 서버가 원격이라 `auto` 에서는 Host 탭이 꺼집니다. `cluster.host_management: enabled` 로 켜면 kubelet·설정·컨테이너 관리만 쓸 수 있습니다.
+
+WARNING: 백업 위치(`backup.dir`)를 `/etc/kubernetes/manifests` 안으로 지정하면 kubelet 이 백업 파일까지 Pod 로 띄웁니다. {tool} 은(는) 이 경우 저장을 거부합니다.
+
+TIP: 인증서를 갱신하면 `admin.conf` 가 새로 만들어집니다. 다른 곳에 복사해 둔 kubeconfig 는 다시 복사하십시오.

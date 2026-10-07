@@ -1,0 +1,74 @@
+[[k3stui-host-k3s]]
+== 노드 관리: K3s
+
+K3s 서버 노드에서 root 로 실행하면 *Host* 탭이 나타납니다. API 서버가 이 호스트에 있을 때만 켜집니다.
+
+[[k3stui-host-k3s-service]]
+=== 서비스
+
+k3s 서비스 상태, 버전, API 서버 상태, 데이터스토어, 디스크 사용량을 보여 주고 서비스를 제어합니다.
+
+.Host 탭 — Service
+image::k3stui/host-service.png[k3s 서비스 상태,pdfwidth=100%]
+
+[cols="1,3", options="header"]
+|===
+| 키 | 동작
+
+| kbd:[l] | `journalctl -u k3s` 로그를 실시간으로 보여 줍니다. 오류와 경고는 색으로 구분합니다
+| kbd:[r] / kbd:[t] / kbd:[a] | 재시작 / 중지 / 시작. 서비스 이름을 다시 입력해야 실행됩니다
+| kbd:[c] | `k3s check-config` 를 실행합니다
+| kbd:[J] | agent 노드를 추가하는 명령을 만들어 보여 줍니다
+|===
+
+[[k3stui-host-k3s-config]]
+=== config.yaml
+
+`/etc/rancher/k3s/config.yaml`(과 `config.yaml.d/`)을 보고 편집합니다. 토큰처럼 민감한 값은 가려서 표시합니다.
+
+.Host 탭 — config.yaml
+image::k3stui/host-config.png[config.yaml 보기,pdfwidth=100%]
+
+kbd:[e] 로 편집하면 저장할 때 다음 순서를 거칩니다.
+
+. YAML 문법을 검증합니다.
+. 원래 파일과 바뀐 부분을 비교해 보여 줍니다.
+. 기존 파일을 `<backup.dir>/config/` 에 백업한 뒤 저장합니다.
+. k3s 서비스를 재시작할지 묻습니다.
+
+[[k3stui-host-k3s-manifests]]
+=== 자동 배포 manifest
+
+K3s 가 자동으로 배포하는 manifest 목록을 보여 줍니다. kbd:[s] 로 `.skip` 파일을 만들거나 지워 자동 배포를 끄고 켭니다.
+
+[[k3stui-host-k3s-certs]]
+=== 인증서
+
+인증서는 만료가 빠른 순서로 정렬되며, 30일 이내 만료는 노란색, 만료된 인증서는 빨간색으로 표시합니다.
+kbd:[R] 로 인증서를 갱신합니다.
+
+.Host 탭 — Certificates
+image::k3stui/host-certificates.png[인증서 목록,pdfwidth=100%]
+
+[[k3stui-host-k3s-backup]]
+=== 데이터스토어 백업과 복원
+
+[cols="1,3", options="header"]
+|===
+| 키 | 동작
+
+| kbd:[b] | 지금 백업합니다. SQLite 는 `VACUUM INTO` 로 K3s 가 실행 중일 때도 일관된 사본을 만들고, 복원에 필요한 서버 토큰을 `<백업>.token` 으로 함께 저장합니다. etcd 는 스냅샷을 만듭니다
+| kbd:[R] | SQLite 백업으로 복원합니다. etcd 는 복원 절차를 안내합니다
+| kbd:[x] | 백업을 삭제합니다
+|===
+
+백업은 `backup.dir` 에 저장되고, `backup.keep` 개수를 넘으면 오래된 것부터 지웁니다.
+
+CAUTION: SQLite 를 복원하면 무결성 검사와 토큰 일치를 먼저 확인하고, 기존 DB 를 `state.db.pre-restore-<시각>` 으로 남긴 뒤 교체합니다.
+복원하는 동안 k3s 서비스가 멈춥니다.
+
+[[k3stui-host-k3s-runtime]]
+=== 컨테이너와 이미지
+
+containerd 의 컨테이너와 이미지를 `crictl` 로 조회합니다.
+이미지 화면에서 kbd:[P] 를 누르면 쓰지 않는 이미지를 정리합니다.

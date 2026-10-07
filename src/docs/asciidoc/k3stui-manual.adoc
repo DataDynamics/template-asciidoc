@@ -1,0 +1,60 @@
+= k3stui 사용자 매뉴얼
+:author: DataDynamics
+// 아래 세 값은 build.gradle 이 빌드 시 덮어씁니다. IDE 미리보기용 기본값입니다.
+:revnumber: 1.0.0
+:revdate: 2026-10-07
+:revremark: 샘플
+:doctype: book
+:lang: ko
+:description: K3s·RKE2·kubeadm 클러스터를 터미널 하나에서 관리하는 TUI k3stui 의 사용자 매뉴얼 샘플
+:keywords: k3s, rke2, kubeadm, kubernetes, tui, 매뉴얼 샘플
+// 목차, 섹션 번호, 렌더링, 한국어 캡션 등 공통 속성
+include::_attributes-ko.adoc[]
+// 이 매뉴얼에서 쓰는 공통 속성
+:tool: k3stui
+:repo-url: https://github.com/DataDynamics/k3s-management-tui
+:install-dir: /opt/k3stui
+:log-dir: /var/log/k3stui
+
+[preface]
+[[k3stui-about]]
+== 이 매뉴얼에 대하여
+
+이 문서는 공개 프로젝트 {repo-url}[K3s & K8s Management TUI ({tool})] 의 README 와 설정 파일을 바탕으로
+만든 *매뉴얼 샘플* 입니다. 화면 그림도 같은 저장소의 스크린샷을 사용했습니다.
+{tool} 은(는) Apache License 2.0 으로 배포됩니다.
+
+다른 샘플인 "Lumen 지식 검색" 매뉴얼이 여러 부(part)로 나눈 큰 매뉴얼이라면,
+이 문서는 부 없이 장(chapter)만으로 구성한 *한 권짜리 매뉴얼* 의 예입니다.
+
+* 장 파일은 `k3stui/` 디렉터리에 둡니다.
+* 키 입력은 `+kbd:[Ctrl+R]+` 처럼 kbd 매크로로, 화면 그림은 `images/k3stui/` 에 둡니다.
+* 키 참조와 문제 해결처럼 찾아보는 내용은 부록으로 뺍니다.
+
+NOTE: 기능과 옵션은 {tool} 버전에 따라 달라질 수 있습니다. 최신 내용은 {repo-url}[프로젝트 저장소]를 확인하십시오.
+
+include::k3stui/overview.adoc[]
+
+include::k3stui/install.adoc[]
+
+include::k3stui/running.adoc[]
+
+include::k3stui/screens.adoc[]
+
+include::k3stui/resources.adoc[]
+
+include::k3stui/host-k3s.adoc[]
+
+include::k3stui/host-rke2.adoc[]
+
+include::k3stui/host-kubeadm.adoc[]
+
+include::k3stui/other-clusters.adoc[]
+
+include::k3stui/configuration.adoc[]
+
+include::k3stui/safety.adoc[]
+
+include::k3stui/appendix-keys.adoc[]
+
+include::k3stui/appendix-troubleshooting.adoc[]

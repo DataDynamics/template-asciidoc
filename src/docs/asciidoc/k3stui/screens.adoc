@@ -1,0 +1,75 @@
+[[k3stui-screens]]
+== 화면 구성과 기본 조작
+
+[[k3stui-screens-layout]]
+=== 화면 구성
+
+[source,text]
+----
+ K3s v1.36.5+k3s1 │ dev-server │ k3s ● active │ ns: all              22:19:14   <1>
+ 1 Dashboard   2 Workloads   3 Network   4 Storage   5 Config   6 Host   7 Helm  <2>
+Pods │ Deployments │ StatefulSets │ DaemonSets │ ReplicaSets │ Jobs │ CronJobs   <3>
+Pods ns:all  [1/10]
+NAMESPACE    NAME                      READY  STATUS   RESTARTS  CPU  MEM          <4>
+kube-system  coredns-7cfb7bc9c7-vwzlf  1/1    Running  0         4m   19.1Mi
+l 로그  L 이전 로그  s 셸  p 포트포워딩  d 상세  y YAML  e 편집  x 삭제  ? 도움말    <5>
+----
+<1> 헤더. 버전, 호스트 이름, 노드 서비스 상태, 현재 네임스페이스를 보여 줍니다. 읽기 전용 모드면 `READ-ONLY` 가 표시됩니다.
+<2> 탭. 숫자 키로 전환합니다.
+<3> 하위 탭. kbd:[Tab] 과 kbd:[Shift+Tab] 으로 전환합니다.
+<4> 목록. 리소스 목록은 watch 로 바로 갱신됩니다.
+<5> 현재 화면에서 쓸 수 있는 작업 키.
+
+.탭과 하위 탭
+[cols="1,1,4", options="header"]
+|===
+| 키 | 탭 | 하위 탭
+
+| kbd:[1] | Dashboard | —
+| kbd:[2] | Workloads | Pods, Deployments, StatefulSets, DaemonSets, ReplicaSets, Jobs, CronJobs
+| kbd:[3] | Network | Services, Ingresses, EndpointSlices, NetworkPolicies, Cilium 정책·에이전트, Port-forwards
+| kbd:[4] | Storage | PVC, PV, StorageClasses, local-path 실제 사용량
+| kbd:[5] | Config | ConfigMaps, Secrets, ServiceAccounts, Roles, RoleBindings, ClusterRoles, ClusterRoleBindings
+| kbd:[6] | Host | Service, config.yaml, Manifests, Certificates, Backups, Containers, Images
+| kbd:[7] | Helm | Releases, HelmCharts, HelmChartConfigs
+|===
+
+Nodes, Events, Namespaces 처럼 탭에 없는 리소스는 명령 모드(`:nodes`, `:events`, `:ns`)로 엽니다.
+
+[[k3stui-screens-keys]]
+=== 공통 키
+
+[cols="2,3", options="header"]
+|===
+| 키 | 동작
+
+| kbd:[1] ~ kbd:[7] | 탭 전환
+| kbd:[Tab], kbd:[Shift+Tab] (또는 `]`, `[`) | 하위 탭 전환
+| kbd:[↑] / kbd:[k], kbd:[↓] / kbd:[j], kbd:[PgUp], kbd:[PgDn], kbd:[g], kbd:[G] | 이동
+| kbd:[/] | 필터. `!` 로 시작하면 제외 조건입니다
+| kbd:[n] | 네임스페이스 선택
+| kbd:[:] | 명령 모드. 예: `:pods`, `:deploy`, `:nodes`, `:ns kube-system`, `:q`
+| kbd:[Ctrl+R] | 새로고침
+| kbd:[Esc] | 뒤로 / 필터 해제
+| kbd:[?] | 도움말. 현재 화면에서 쓸 수 있는 모든 키를 보여 줍니다
+| kbd:[q] | 하위 화면에서는 뒤로, 최상위 화면에서는 종료
+|===
+
+.도움말 화면
+image::k3stui/help.png[도움말 화면,pdfwidth=90%]
+
+[[k3stui-screens-text]]
+=== 텍스트 화면 (로그·YAML·describe)
+
+[cols="2,3", options="header"]
+|===
+| 키 | 동작
+
+| kbd:[/], kbd:[n], kbd:[N] | 검색, 다음 결과, 이전 결과
+| kbd:[w] | 줄바꿈 전환
+| kbd:[f] | follow 전환 (로그 스트림)
+| kbd:[←], kbd:[→] | 가로 스크롤
+| kbd:[Esc] / kbd:[q] | 뒤로
+|===
+
+TIP: 키는 `keybindings.yaml` 로 바꿀 수 있습니다(<<k3stui-configuration-files>>).

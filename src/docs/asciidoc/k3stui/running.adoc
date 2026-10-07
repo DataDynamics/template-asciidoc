@@ -1,0 +1,49 @@
+[[k3stui-running]]
+== 실행 옵션
+
+.명령행 옵션
+[cols="2,4", options="header"]
+|===
+| 옵션 | 설명
+
+| `--config <파일>` | 설정 파일을 지정합니다
+| `--kubeconfig <파일>` | kubeconfig 를 지정합니다. 기본은 자동 탐색입니다(<<k3stui-running-kubeconfig>>)
+| `--context <이름>` | kubeconfig 의 context 를 고릅니다. 기본은 current-context 입니다
+| `--distribution <배포판>` | 배포판을 직접 지정합니다: `auto`, `k3s`, `rke2`, `kubeadm`, `kubernetes`
+| `--read-only` | 모든 변경 작업을 막습니다
+| `-n <네임스페이스>` | 시작 네임스페이스를 지정합니다. `all` 은 전체입니다
+| `--view <탭>` | 시작 탭을 지정합니다: `dashboard`, `workloads`, `network`, `storage`, `config`, `host`, `helm`
+| `--check` | 환경을 점검하고 종료합니다
+| `--columns [리소스]` | 컬럼 재정의에 쓸 리소스 이름과 내장 컬럼을 출력하고 종료합니다
+| `--dump <소스>` | 소스 하나를 표로 출력하고 종료합니다. 예: `pods`, `nodes`, `certs`, `backups`
+| `--version` | 버전을 출력합니다
+|===
+
+[[k3stui-running-config]]
+=== 설정 파일을 찾는 순서
+
+설정 파일은 다음 순서로 찾습니다. 파일이 없어도 내장 기본값으로 동작합니다.
+
+. `--config <파일>`
+. `$K3STUI_CONF`
+. `~/.config/k3stui/k3stui.yaml` — 설치본을 고치지 않고 사용자별·클러스터별 설정을 둘 때
+. `<설치 경로>/conf/k3stui.yaml`
+. `/etc/k3stui/k3stui.yaml`
+
+`keybindings.yaml`, `theme.yaml`, `views.d/` 는 고른 설정 파일과 같은 디렉터리에서 찾습니다.
+
+[[k3stui-running-kubeconfig]]
+=== kubeconfig 를 찾는 순서
+
+. `--kubeconfig`
+. 설정 파일의 `cluster.kubeconfig`
+. `$KUBECONFIG` (여러 파일을 `:` 로 이은 형식 포함)
+. `~/.kube/config`
+. `/etc/rancher/k3s/k3s.yaml` (K3s)
+. `/etc/rancher/rke2/rke2.yaml` (RKE2)
+. `/etc/kubernetes/admin.conf` (kubeadm)
+
+자동 탐색 후보 중 context 와 API 서버 주소가 실제로 들어 있는 첫 파일을 씁니다. 그래서 내용이 빈 `~/.kube/config` 는 건너뜁니다.
+
+NOTE: 일반 사용자도 읽을 수 있는 kubeconfig 가 있으면 root 없이 실행할 수 있습니다.
+이때는 리소스 기능만 쓸 수 있고, 서비스 제어·설정 편집·백업 같은 호스트 기능은 꺼집니다.

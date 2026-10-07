@@ -1,0 +1,27 @@
+[appendix]
+[[k3stui-appendix-keys]]
+== 작업 키 참조
+
+[cols="1,3", options="header"]
+|===
+| 대상 | 키
+
+| 모든 리소스 | kbd:[d] / kbd:[Enter] 상세, kbd:[y] YAML, kbd:[e] 편집, kbd:[x] 삭제
+| Pod | kbd:[l] 로그, kbd:[L] 이전 컨테이너 로그, kbd:[s] 셸, kbd:[p] 포트포워딩
+| Deployment, StatefulSet | kbd:[S] 스케일, kbd:[r] 롤아웃 재시작
+| DaemonSet | kbd:[r] 롤아웃 재시작
+| CronJob | kbd:[t] 즉시 실행
+| Service | kbd:[p] 포트포워딩
+| Node | kbd:[c] cordon, kbd:[u] uncordon, kbd:[D] drain
+| Secret | kbd:[v] 값 보기 (감사 로그에 기록)
+| Host › Service | kbd:[l] 서비스 로그, kbd:[r] 재시작, kbd:[t] 중지, kbd:[a] 시작, kbd:[c] 점검, kbd:[J] 노드 추가 명령
+| Host › config.yaml / kubelet config | kbd:[v] 보기, kbd:[e] 편집, kbd:[r] 서비스 재시작
+| Host › Static Pods (kubeadm) | kbd:[v] 보기, kbd:[e] 편집
+| Host › Manifests | kbd:[v] 보기, kbd:[s] `.skip` 전환
+| Host › Certificates | kbd:[v] 상세, kbd:[R] 인증서 갱신
+| Host › Backups | kbd:[b] 지금 백업, kbd:[R] 복원 또는 복원 안내, kbd:[x] 삭제
+| Host › Containers | kbd:[i] inspect, kbd:[l] 로그
+| Host › Images | kbd:[i] inspect, kbd:[x] 삭제, kbd:[P] 미사용 이미지 정리
+| Helm › Releases | kbd:[v] values, kbd:[a] 전체 values, kbd:[m] manifest, kbd:[h] 이력, kbd:[R] 롤백, kbd:[x] 삭제
+| Network › Port-forwards | kbd:[x] 중지
+|===

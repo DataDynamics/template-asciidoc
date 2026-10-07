@@ -1,0 +1,69 @@
+[[k3stui-install]]
+== 설치와 첫 실행
+
+[[k3stui-install-requirements]]
+=== 요구 사항
+
+* K3s 노드에서 호스트 관리까지 쓰려면 K3s 가 설치된 Linux 서버(systemd 사용)와 root 권한이 필요합니다.
+  K3s kubeconfig 의 기본 권한이 `0600` 이기 때문입니다.
+* RKE2 노드는 RKE2 가 설치된 노드(systemd 사용)와 root 권한이 필요합니다.
+* kubeadm 노드는 kubeadm·kubelet·crictl 이 있는 노드와 root 권한이 필요합니다. etcdctl 은 없어도 됩니다(etcd 컨테이너 안의 것을 씁니다).
+* 다른 Kubernetes 클러스터에 붙이려면 접속할 수 있는 kubeconfig 와 `kubectl` 만 있으면 됩니다.
+* 선택: `helm`(Helm 탭), metrics-server(CPU·메모리 표시, K3s 에 기본 포함)
+
+[[k3stui-install-package]]
+=== 패키지로 설치
+
+[source,console]
+----
+$ sudo dpkg -i k3stui_<버전>-1_amd64.deb              # Ubuntu
+$ sudo dnf install ./k3stui-<버전>-1.el9.x86_64.rpm   # RHEL 9
+----
+
+패키지는 GitHub Release 에서 내려받습니다. amd64·arm64 실행 파일, tar.gz, deb, rpm 이 제공됩니다.
+
+[[k3stui-install-script]]
+=== 스크립트로 설치
+
+[source,console,subs="+attributes"]
+----
+$ sudo bin/install.sh                 # <1>
+$ sudo k3stui
+$ sudo bin/install.sh --uninstall     # <2>
+----
+<1> {install-dir} 에 설치하고 `/usr/local/bin/k3stui` 링크를 만듭니다. `--prefix`, `--link` 로 위치를 바꿀 수 있습니다.
+<2> 제거합니다. 설정과 로그는 남깁니다.
+
+.설치 위치
+[cols="2,3", options="header"]
+|===
+| 경로 | 내용
+
+| `{install-dir}/libexec/k3stui` | 실행 파일
+| `{install-dir}/bin/k3stui` | 런처. 권한을 확인한 뒤 실행 파일을 호출합니다
+| `{install-dir}/conf/` | 설정 파일
+| `{log-dir}/` | 앱 로그(`k3stui.log`)와 감사 로그(`audit.log`)
+|===
+
+TIP: 다시 설치하거나 패키지를 업그레이드해도 사용자가 고친 설정 파일은 덮어쓰지 않습니다. 새 기본값은 `*.new` 파일로 저장됩니다.
+
+[[k3stui-install-check]]
+=== 환경 점검
+
+처음 실행하기 전에 `--check` 로 환경을 점검합니다.
+
+[source,console]
+----
+$ sudo k3stui --check
+[OK  ] kubeconfig      /etc/rancher/k3s/k3s.yaml (K3S 기본 경로)
+[OK  ] API 서버        v1.36.5+k3s1  https://127.0.0.1:6443 (context: default)
+[OK  ] 배포판          K3S (API 서버: 로컬)
+[OK  ] 호스트 관리     K3S
+[OK  ] 서비스          k3s.service active/running
+[OK  ] 노드 디렉터리   /data2/k3s
+[OK  ] 데이터스토어    sqlite /data2/k3s/server/db/state.db
+----
+
+kubeconfig, API 서버, 배포판, metrics-server, helm, kubectl 을 점검하고,
+호스트 관리가 켜져 있으면 root 권한, 노드 서비스, 노드 디렉터리, 설정 파일, 데이터스토어까지 확인합니다.
+`[WARN]` 이나 `[FAIL]` 줄이 있으면 <<k3stui-troubleshooting>> 을 참고하십시오.

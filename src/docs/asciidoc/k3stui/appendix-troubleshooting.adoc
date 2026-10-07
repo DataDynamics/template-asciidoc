@@ -1,0 +1,20 @@
+[appendix]
+[[k3stui-troubleshooting]]
+== 문제 해결
+
+먼저 `k3stui --check` 를 실행해 보십시오. 대부분의 문제는 `[WARN]` 이나 `[FAIL]` 줄에 원인이 나옵니다.
+
+[cols="2,3", options="header"]
+|===
+| 증상 | 확인할 점
+
+| `읽을 수 있는 kubeconfig가 없습니다` | K3s 노드라면 `sudo` 로 실행하고, 다른 클러스터라면 `--kubeconfig` 로 파일을 지정합니다
+| 엉뚱한 클러스터에 연결됩니다 | `--check` 의 kubeconfig 항목에서 어떤 파일을 골랐는지 확인하고, `--kubeconfig`·`--context` 로 지정합니다
+| Host 탭이 보이지 않습니다 | `--check` 의 `호스트 관리` 줄에 이유가 나옵니다. `cluster.host_management: enabled` 로 강제할 수 있습니다
+| CPU·메모리가 `-` 로 표시됩니다 | metrics-server Pod 상태를 확인합니다
+| Helm 탭에 오류가 표시됩니다 | `helm` 이 PATH 에 있는지, 또는 `tools.helm` 경로를 확인합니다
+| 데이터스토어가 `unknown` 으로 표시됩니다 | `k3s.data_dir` 이 실제 data-dir 과 같은지 확인합니다
+| 시작 화면 아래에 `설정 경고` 가 나옵니다 | `--check` 의 `[WARN]` 줄에 파일과 이유가 나옵니다
+| 화면이 깨집니다 | 256색 이상을 지원하는 터미널과 `TERM=xterm-256color` 를 사용합니다
+| 동작 기록을 보고 싶습니다 | `{log-dir}/k3stui.log`(앱 로그), `{log-dir}/audit.log`(변경 작업)
+|===

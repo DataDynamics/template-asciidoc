@@ -9,42 +9,8 @@
 :lang: ko
 :description: AsciiDoc 문서를 HTML 과 PDF 로 생성하는 템플릿 프로젝트의 사용자 가이드
 :keywords: asciidoc, asciidoctor, gradle, pdf, 문서 템플릿
-// 목차와 섹션
-:toc: left
-:toclevels: 3
-:toc-title: 목차
-:sectnums:
-:sectnumlevels: 3
-:sectanchors:
-:sectlinks:
-:xrefstyle: basic
-// 장 제목 앞의 영문 'Chapter' 표기를 없앱니다 (1. 개요 형태).
-:chapter-signifier:
-:section-refsig: 절
-:chapter-refsig: 장
-:appendix-refsig: 부록
-// 렌더링
-:icons: font
-:experimental:
-:hide-uri-scheme:
-:source-highlighter: rouge
-:rouge-style: github
-:imagesdir: images
-:docinfo: shared
-:attribute-missing: warn
-// 한국어 캡션
-:note-caption: 참고
-:tip-caption: 팁
-:important-caption: 중요
-:warning-caption: 경고
-:caution-caption: 주의
-:appendix-caption: 부록
-:example-caption: 예제
-:figure-caption: 그림
-:table-caption: 표
-:version-label: 버전
-:last-update-label: 마지막 수정
-:untitled-label: 제목 없음
+// 목차, 섹션 번호, 렌더링, 한국어 캡션 등 공통 속성
+include::_attributes-ko.adoc[]
 // 프로젝트 공통 속성. 본문에서 {project-name} 처럼 참조합니다.
 :project-name: 예제 프로젝트
 :asciidoctor-docs: https://docs.asciidoctor.org

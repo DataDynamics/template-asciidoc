@@ -1,0 +1,38 @@
+// 모든 문서가 공유하는 헤더 속성입니다. 문서 헤더에서 include 합니다.
+// 문서마다 다른 값(제목, 작성자, 설명 등)은 각 문서 헤더에 둡니다.
+// 목차와 섹션
+:toc: left
+:toclevels: 3
+:toc-title: 목차
+:sectnums:
+:sectnumlevels: 3
+:sectanchors:
+:sectlinks:
+:xrefstyle: basic
+// 장 제목 앞의 영문 'Chapter' 표기를 없앱니다 (1. 개요 형태).
+:chapter-signifier:
+:section-refsig: 절
+:chapter-refsig: 장
+:appendix-refsig: 부록
+// 렌더링
+:icons: font
+:experimental:
+:hide-uri-scheme:
+:source-highlighter: rouge
+:rouge-style: github
+:imagesdir: images
+:docinfo: shared
+:attribute-missing: warn
+// 한국어 캡션
+:note-caption: 참고
+:tip-caption: 팁
+:important-caption: 중요
+:warning-caption: 경고
+:caution-caption: 주의
+:appendix-caption: 부록
+:example-caption: 예제
+:figure-caption: 그림
+:table-caption: 표
+:version-label: 버전
+:last-update-label: 마지막 수정
+:untitled-label: 제목 없음

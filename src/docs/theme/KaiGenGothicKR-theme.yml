@@ -1,233 +1,116 @@
+# KaiGenGothicKR PDF 테마
+#
+# DataDynamics 테마의 대안으로 쓰는 단순한 테마입니다.
+# 본문은 KaiGen Gothic KR, 코드는 Roboto Mono 로 표시하고 브랜드 색상 없이 회색 위주로 꾸밉니다.
+# Asciidoctor PDF 기본 테마를 상속하고 바꾸는 항목만 정의합니다.
+# 기본 테마의 전체 키 목록은 https://docs.asciidoctor.org/pdf-converter/latest/theme/ 를 참고하십시오.
+extends: default
+
 font:
   catalog:
+    # 기본 테마의 Noto Serif, M+ 1mn 글꼴을 함께 유지합니다 (콜아웃 숫자 처리에 사용).
+    merge: true
+    # 본문용 한글 글꼴
     KaiGen Gothic KR:
       normal: KaiGenGothicKR-Regular.ttf
       bold: KaiGenGothicKR-Bold.ttf
       italic: KaiGenGothicKR-Regular-Italic.ttf
       bold_italic: KaiGenGothicKR-Bold-Italic.ttf
+    # 코드용 글꼴. 한글은 대체 글꼴(KaiGen Gothic KR)로 표시됩니다.
     Roboto Mono:
       normal: RobotoMono-Regular.ttf
       bold: RobotoMono-Bold.ttf
       italic: RobotoMono-Italic.ttf
       bold_italic: RobotoMono-BoldItalic.ttf
   fallbacks:
+    # 코드 글꼴에 없는 글리프는 본문 글꼴로 대체합니다.
     - KaiGen Gothic KR
-    # NOTE Roboto Mono supplies U+200B (zero width space) inserted by Asciidoctor PDF for URL line breaking
-    - Roboto Mono
+    # 기본 테마가 쓰는 특수 공백(U+200B 제로폭 공백, U+202F 좁은 줄바꿈 없는 공백)을 지원합니다.
+    - Noto Serif
+
 page:
-  background_color: ffffff
-  layout: portrait
-  # NOTE multiply inches by 72 to get pt values
-  #margin: [0.5 * 72, 0.67 * 72, 0.67 * 72, 0.67 * 72]
   margin: [0.5in, 0.67in, 0.67in, 0.67in]
-  # size can be a named size (e.g., A4) or custom dimensions (e.g., [8.25in, 11.69in])
   size: A4
+
 base:
-  # color as hex string (leading # is optional)
-  font_color: 333333
-  # color as RGB array
-  #font_color: [51, 51, 51]
-  # color as CMYK array (approximated)
-  #font_color: [0, 0, 0, 0.92]
-  #font_color: [0, 0, 0, 92%]
   font_family: KaiGen Gothic KR
-  # choose one of these font_size/line_height_length combinations
-  #font_size: 14
-  #line_height_length: 20
-  #font_size: 11.25
-  #line_height_length: 18
-  #font_size: 11.2
-  #line_height_length: 16
-  #font_size: 10.5
-  font_size: 9 
-  #line_height_length: 15
-  # correct line height for Noto Serif metrics
+  font_color: 333333
+  font_size: 9
   line_height_length: 15
-  #font_size: 11.25
-  #line_height_length: 18
   line_height: $base_line_height_length / $base_font_size
-  font_size_large: round($base_font_size * 1.25)
-  font_size_small: round($base_font_size * 0.85)
-  font_size_min: $base_font_size * 0.75
-  font_style: normal
-  align: left
-  border_radius: 4
-  border_width: 0.5
-  border_color: eeeeee
-# FIXME vertical_rhythm is weird; we should think in terms of ems
-#vertical_rhythm: $base_line_height_length * 2 / 3
-# correct line height for Noto Serif metrics
-vertical_rhythm: $base_line_height_length
-horizontal_rhythm: $base_line_height_length
+  border_color: EEEEEE
+
 link:
-  font_color: 428bca
-# literal is currently used for inline monospaced in prose and table cells
+  font_color: 428BCA
+
 codespan:
-  font_color: b12146
   font_family: Roboto Mono
-heading:
-  #font_color: 181818
-  font_color: $base_font_color
+  font_color: B12146
+
+code:
+  font_family: Roboto Mono
+  font_size: 9
+  line_height: 1.25
+  background_color: F5F5F5
+  border_color: CCCCCC
+
+# 콜아웃 번호(원문자)는 본문 글꼴로 그립니다. 글꼴이 다르면 콜아웃 목록에서 번호가 글줄 위로 떠 보입니다.
+conum:
   font_family: $base_font_family
-  # h1 is used for part titles
-  h1_font_size: floor($base_font_size * 2.6)
-  # h2 is used for chapter titles
-  h2_font_size: floor($base_font_size * 2.15)
-  h3_font_size: round($base_font_size * 1.7)
-  h4_font_size: $base_font_size_large
-  h5_font_size: $base_font_size
-  h6_font_size: $base_font_size_small
+  font_color: $codespan_font_color
+  line_height: $base_line_height
+
+heading:
+  font_color: $base_font_color
   font_style: bold
-  #line_height: 1.4
-  # correct line height for Noto Serif metrics
   line_height: 1.2
   margin_top: $vertical_rhythm * 0.2
   margin_bottom: $vertical_rhythm * 0.8
-title_page:
-  align: right
-  title_top: 55%
-  title_font_size: $heading_h1_font_size
-  title_font_color: 999999
-  title_line_height: 0.9
-  subtitle_font_size: $heading_h3_font_size
-  subtitle_font_style: bold_italic
-  subtitle_line_height: 1
-  authors_margin_top: $base_font_size * 1.25
-  authors_font_size: $base_font_size_large
-  authors_font_color: 181818
-  revision_margin_top: $base_font_size * 1.25
-#prose:
-#  margin_top: 0
-#  margin_bottom: $vertical_rhythm
-block:
-  #margin_top: 0
-  #margin_bottom: $vertical_rhythm
-  padding: [$vertical_rhythm, $vertical_rhythm * 1.25, $vertical_rhythm, $vertical_rhythm * 1.25]
-# code is used for source blocks (perhaps change to source or listing?)
+
 caption:
   font_style: italic
-  align: left
-  # FIXME perhaps set line_height instead of / in addition to margins?
-  margin_inside: $vertical_rhythm * 0.25
-  margin_outside: 0
-code:
-  font_color: $base_font_color
-  #font_family: Liberation Mono
-  #font_size: floor($base_font_size * 0.9)
-  #font_size: 10
-  #padding: [9.5, 9.5, 9.5, 9.5]
-  # LiberationMono carries extra gap below line
-  #padding: [10, 10, 7.5, 10]
-  #line_height: 1.45
-  font_family: $codespan_font_family
-  #font_size: ceil($base_font_size)
-  font_size: 9
-  #padding: [$base_font_size, $code_font_size, $base_font_size, $code_font_size]
-  padding: $code_font_size
-  line_height: 1.25
-  background_color: f5f5f5
-  border_color: cccccc
-  border_radius: $base_border_radius
-  border_width: 0.75
-quote:
-  font_color: $base_font_color
-  font_size: $base_font_size_large
-  border_width: 5
-  border_color: $base_border_color
-  cite_font_size: $base_font_size_small
-  cite_font_color: 999999
+
+title_page:
+  text_align: right
+  title:
+    top: 55%
+    font_size: $heading_h1_font_size
+    font_color: 999999
+    line_height: 0.9
+  subtitle:
+    font_size: $heading_h3_font_size
+    font_style: bold_italic
+  authors:
+    margin_top: $base_font_size * 1.25
+    font_size: $base_font_size_large
+    font_color: 181818
+  revision:
+    margin_top: $base_font_size * 1.25
+
+table:
+  border_color: DDDDDD
+  cell_padding: [3, 3, 6, 3]
+  body:
+    stripe_background_color: F9F9F9
+  foot:
+    background_color: F0F0F0
+
 sidebar:
-  border_color: $page_background_color
-  border_radius: $base_border_radius
-  border_width: $base_border_width
-  background_color: eeeeee
-  title_font_color: $heading_font_color
-  title_font_family: $heading_font_family
-  title_font_size: $heading_h4_font_size
-  title_font_style: $heading_font_style
-  title_align: center
-example:
-  border_color: $base_border_color
-  border_radius: $base_border_radius
-  border_width: 0.75
-  background_color: transparent
-admonition:
-  border_color: $base_border_color
-  border_width: $base_border_width
-conum:
-  font_family: $codespan_font_family
-  font_color: $codespan_font_color
-  font_size: $base_font_size
-  line_height: 4 / 3
-image:
-  align_default: left
-  scaled_width_default: 0.5
-lead:
-  # QUESTION what about $base_font_size_large?
-  #font_size: floor($base_line_height_length * 0.8)
-  #font_size: floor($base_font_size * 1.15)
-  #line_height: 1.3
-  font_size: $base_font_size_large
-  line_height: 1.4
-abstract:
-  #font_color: 404040
-  font_color: 5c6266
-  font_size: $lead_font_size
-  line_height: $lead_line_height
-  font_style: italic
-thematic_break:
-  border_color: $base_border_color
-  margin_top: $vertical_rhythm * 0.5
-  margin_bottom: $vertical_rhythm * 1.5
+  background_color: EEEEEE
+
 description_list:
   term_font_style: italic
-  description_indent: $horizontal_rhythm * 1.25
-list:
-  indent: $horizontal_rhythm * 1.5
-  # NOTE item_spacing applies to list items that do not have complex content
-  item_spacing: $vertical_rhythm / 2
-  #marker_font_color: 404040
-table:
-  background_color: $page_background_color
-  #head_background_color: <hex value>
-  #head_font_color: $base_font_color
-  even_row_background_color: f9f9f9
-  #odd_row_background_color: <hex value>
-  foot_background_color: f0f0f0
-  border_color: dddddd
-  border_width: $base_border_width
-  # HACK accounting for line-height
-  cell_padding: [3, 3, 6, 3]
+
 toc:
-  indent: $horizontal_rhythm
-  dot_leader_color: dddddd
-  #dot_leader_content: ". "
-  line_height: 1.4
-# NOTE In addition to footer, header is also supported
+  dot_leader:
+    font_color: DDDDDD
+
 footer:
-  font_size: $base_font_size_small
   font_color: $base_font_color
-  # NOTE if background_color is set, background and border will span width of page
-  border_color: dddddd
-  border_width: 0.25
-  height: $base_line_height_length * 2.5
-  padding: [$base_line_height_length / 2, 1, 0, 1]
-  valign: top
-  #image_valign: <alignment> or <number>
-  # additional attributes for content:
-  # * {page-count}
-  # * {page-number}
-  # * {document-title}
-  # * {document-subtitle}
-  # * {chapter-title}
-  # * {section-title}
-  # * {section-or-chapter-title}
-  recto_content:
-    #right: '{section-or-chapter-title} | {page-number}'
-    #right: '{document-title} | {page-number}'
-    right: '{page-number}'
-    #center: '{page-number}'
-  verso_content:
-    #left: '{page-number} | {chapter-title}'
-    left: '{page-number}'
-    #center: '{page-number}'
+  border_color: DDDDDD
+  recto:
+    right:
+      content: '{page-number}'
+  verso:
+    left:
+      content: '{page-number}'

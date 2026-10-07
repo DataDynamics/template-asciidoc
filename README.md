@@ -53,7 +53,7 @@ Dependabot(`.github/dependabot.yml`)이 Gradle 플러그인과 GitHub Actions �
     │   └── docinfo.html        # HTML 출력에만 덧붙는 스타일(한국어 글꼴)
     └── theme/
         ├── DataDynamics-theme.yml    # 기본 PDF 테마. 기본 테마를 extends 하고 바꾸는 항목만 정의
-        ├── KaiGenGothicKR-theme.yml  # 대체 PDF 테마 (KaiGen Gothic KR + Roboto Mono)
+        ├── KaiGenGothicKR-theme.yml  # 대체 PDF 테마. 기본 테마를 extends 하는 단순한 회색 테마
         └── *.ttf                     # PDF 에 내장할 글꼴 (아래 "글꼴" 참고)
 ```
 
@@ -87,10 +87,20 @@ HTML 또는 PDF만 따로 생성하려면 `./gradlew asciidoctor` 또는 `./grad
 ./gradlew clean build
 ```
 
+> **configuration cache 는 켜지 마십시오.** Asciidoctor Gradle Plugin 4.0.5 가 configuration cache 를 지원하지 않아
+> `--configuration-cache` 옵션이나 `org.gradle.configuration-cache=true` 설정을 쓰면 빌드가 실패합니다.
+
 ## 버전과 날짜
 
 문서 표지의 버전은 `gradle.properties` 의 `version` 값이고, 날짜는 빌드 시점의 날짜입니다.
 `build.gradle` 이 `revnumber`, `revdate` 속성으로 전달하므로 `index.adoc` 의 값을 직접 고칠 필요가 없습니다.
+
+### 문서 버전을 올릴 때
+
+1. `gradle.properties` 의 `version` 을 올립니다.
+2. `src/docs/asciidoc/chapters/appendix.adoc` 의 "변경 이력" 표 맨 아래에 새 버전, 날짜, 변경 내용을 한 줄 추가합니다.
+   변경 이력은 문서 부록에 함께 실리므로 별도 CHANGELOG 파일은 두지 않습니다.
+3. 필요하면 `index.adoc` 의 `revremark`(예: 초안, 검토본, 확정본)를 바꿉니다.
 
 ## 새 장 추가하기
 
@@ -115,6 +125,7 @@ HTML 또는 PDF만 따로 생성하려면 `./gradlew asciidoctor` 또는 `./grad
 
 다른 테마를 쓰려면 `build.gradle` 의 `asciidoctorPdf` 블록에서 `pdf-theme` 값을 바꿉니다.
 예를 들어 대체 테마를 쓰려면 `DataDynamics-theme.yml` 을 `KaiGenGothicKR-theme.yml` 로 바꾸십시오.
+`KaiGenGothicKR-theme.yml` 은 브랜드 색상 없이 회색 위주로 꾸민 테마로, 본문 글꼴이 작고(9pt) 코드는 Roboto Mono 로 표시합니다.
 
 ## 글꼴
 
@@ -127,7 +138,7 @@ HTML 또는 PDF만 따로 생성하려면 `./gradlew asciidoctor` 또는 `./grad
 | Roboto Mono | `RobotoMono-Regular`, `-Bold`, `-Italic`, `-BoldItalic` | KaiGenGothicKR 테마의 코드 |
 
 Noto Serif 와 M+ 1mn 은 Asciidoctor PDF 에 포함된 글꼴을 사용합니다 (`pdf-fontsdir` 의 `GEM_FONTS_DIR`).
-DataDynamics 테마는 Noto Serif 를 대체 글꼴로 지정해, Asciidoctor PDF 가 URL 줄바꿈을 위해 넣는 제로폭 공백(U+200B)을 처리합니다.
+두 테마 모두 Noto Serif 를 대체 글꼴로 지정해, Asciidoctor PDF 가 넣는 특수 공백(U+200B 제로폭 공백, U+202F 좁은 줄바꿈 없는 공백)을 처리합니다.
 
 새 글꼴을 추가할 때는 파일을 `src/docs/theme/` 에 넣고 테마의 `font.catalog` 에 등록하십시오.
 catalog 에 등록하지 않은 글꼴 파일은 사용되지 않으니 저장소에 넣지 마십시오.

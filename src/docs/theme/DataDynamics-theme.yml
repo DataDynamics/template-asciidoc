@@ -155,11 +155,12 @@ toc:
 footer:
   font_color: 666666
   border_color: DDDDDD
+  # 쪽 번호는 모든 쪽의 왼쪽 아래에만 표시합니다.
   recto:
     left:
-      content: '{section-or-chapter-title}'
-    right:
       content: '{page-number}'
+    right:
+      content: '{section-or-chapter-title}'
   verso:
     left:
       content: '{page-number}'

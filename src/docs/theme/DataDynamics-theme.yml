@@ -159,9 +159,9 @@ footer:
     left:
       content: '{section-or-chapter-title}'
     right:
-      content: '{page-number} / {page-count}'
+      content: '{page-number}'
   verso:
     left:
-      content: '{page-number} / {page-count}'
+      content: '{page-number}'
     right:
       content: '{chapter-title}'

@@ -1,0 +1,38 @@
+[[install-config]]
+== 설정 파일
+
+모든 서버 설정은 `lumen.yml` 한 파일에서 관리합니다. 비밀 값은 파일에 적지 않고 환경 변수로 넘깁니다.
+
+[source,yaml,subs="+attributes"]
+.lumen.yml
+----
+server:
+  port: {api-port}
+  public-url: {console-url}
+
+storage:
+  path: /var/lib/lumen
+  retention-days: 30          # 삭제한 문서를 보관하는 기간
+
+search:
+  default-mode: hybrid        # keyword | semantic | hybrid
+  page-size: 10
+
+auth:
+  provider: local             # local | oidc
+  oidc:
+    issuer: https://sso.example.com/realms/example
+    client-id: lumen
+    client-secret: $\{LUMEN_OIDC_SECRET}   # 환경 변수에서 읽음
+----
+
+[[install-config-priority]]
+=== 설정 우선순위
+
+같은 항목이 여러 곳에 있으면 다음 순서로 적용됩니다. 위가 우선합니다.
+
+. 환경 변수 (`LUMEN_` 로 시작, 예: `LUMEN_SEARCH_PAGE_SIZE`)
+. `lumen.yml`
+. 제품 기본값
+
+TIP: 설정을 바꾼 뒤에는 `docker compose restart lumen-api` 로 API 서버만 다시 시작하면 됩니다.

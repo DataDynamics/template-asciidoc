@@ -1,0 +1,36 @@
+[[quickstart]]
+== 15분 따라 하기
+
+체험용 컨테이너 한 개로 {product-short} 을(를) 실행하고 첫 검색까지 해 봅니다.
+운영 환경 설치는 <<install-container>> 를 참고하십시오.
+
+[[quickstart-run]]
+=== 체험용 환경 실행
+
+[source,console,subs="+attributes"]
+----
+$ docker run -d --name lumen-trial -p {web-port}:{web-port} example/lumen:trial
+$ docker logs -f lumen-trial    # "Lumen is ready" 가 나오면 준비 완료
+----
+
+브라우저에서 `https://localhost:{web-port}` 에 접속해 체험용 계정으로 로그인합니다.
+체험용 계정 정보는 컨테이너 로그 첫 줄에 출력됩니다.
+
+WARNING: 체험용 이미지는 데이터를 컨테이너 안에만 저장합니다. 컨테이너를 지우면 모든 데이터가 사라집니다.
+
+[[quickstart-kb]]
+=== 첫 지식베이스 만들기
+
+. 왼쪽 메뉴에서 menu:지식베이스[새로 만들기]를 선택합니다.
+. 이름에 `사내 규정` 을 입력하고 btn:[만들기]를 누릅니다.
+. 만든 지식베이스에서 btn:[문서 올리기]를 눌러 PDF 파일 두세 개를 올립니다.
+. 상태가 *색인 완료* 로 바뀔 때까지 기다립니다. 보통 문서 하나에 몇 초 걸립니다.
+
+[[quickstart-search]]
+=== 첫 검색
+
+. 상단 검색창에 `휴가 신청 절차` 처럼 문장으로 입력하고 kbd:[Enter] 를 누릅니다.
+. 결과 목록에서 문서 제목과 일치 구간(하이라이트)을 확인합니다.
+. 오른쪽 *어시스턴트* 패널에서 같은 질문을 하면 출처 번호가 달린 답변을 받습니다.
+
+TIP: 검색 결과가 기대와 다르면 <<tuning-synonyms>> 와 <<tuning-boosting>> 을 참고해 검색을 다듬을 수 있습니다.

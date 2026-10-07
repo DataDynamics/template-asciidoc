@@ -1,0 +1,104 @@
+= Lumen 지식 검색 사용자 매뉴얼
+:author: 예제 주식회사 기술문서팀
+:email: docs@example.com
+// 아래 세 값은 build.gradle 이 빌드 시 덮어씁니다. IDE 미리보기용 기본값입니다.
+:revnumber: 1.0.0
+:revdate: 2026-10-07
+:revremark: 샘플
+:doctype: book
+:lang: ko
+:description: 가상의 제품 Lumen 지식 검색으로 여러 부(part)로 이루어진 제품 매뉴얼을 구성하는 방법을 보여 주는 샘플
+:keywords: 매뉴얼 샘플, 지식 검색, 문서 템플릿
+// 목차, 섹션 번호, 렌더링, 한국어 캡션 등 공통 속성
+include::_attributes-ko.adoc[]
+// 이 매뉴얼에서 쓰는 공통 속성. 제품명이나 포트가 바뀌면 여기만 고칩니다.
+:product: Lumen 지식 검색
+:product-short: Lumen
+:api-port: 8400
+:web-port: 8443
+:console-url: https://lumen.example.com
+:api-base: https://lumen.example.com/api/v2
+
+[preface]
+[[about]]
+== 이 매뉴얼에 대하여
+
+IMPORTANT: {product} 은(는) 이 템플릿의 예제를 위해 만든 *가상의 제품* 입니다.
+화면 이름, 설정 키, 포트, 수치는 모두 설명을 위한 예시입니다.
+
+이 문서는 문서 템플릿으로 큰 제품 매뉴얼을 구성하는 방법을 보여 줍니다.
+
+* 여러 장을 묶는 *부(part)* 는 `= N부` 1단계 제목으로 이 파일에 둡니다.
+* *장(chapter)* 은 `manual/<부 디렉터리>/` 아래 파일 하나에 `==` 2단계 제목으로 씁니다.
+* 장마다 앵커를 붙여 다른 장에서 `+<<kb-create>>+` 처럼 참조합니다.
+* 제품명, 포트, URL 같은 반복 값은 헤더 속성(`+{product}+`, `+{api-port}+`)으로 한곳에서 관리합니다.
+
+include::manual/intro/overview.adoc[]
+
+include::manual/intro/journey.adoc[]
+
+= 1부 — 시작하기
+
+include::manual/intro/quickstart.adoc[]
+
+= 2부 — 설치·구축
+
+include::manual/install/requirements.adoc[]
+
+include::manual/install/container.adoc[]
+
+include::manual/install/configuration.adoc[]
+
+= 3부 — 서비스 준비
+
+include::manual/services/nodes.adoc[]
+
+include::manual/services/connectors.adoc[]
+
+= 4부 — 지식베이스 구축
+
+include::manual/kb/create.adoc[]
+
+include::manual/kb/upload.adoc[]
+
+include::manual/kb/segmentation.adoc[]
+
+= 5부 — 문서 자동 배분
+
+include::manual/routing/rules.adoc[]
+
+include::manual/routing/review.adoc[]
+
+= 6부 — 검색·질의
+
+include::manual/search/search.adoc[]
+
+include::manual/search/assistant.adoc[]
+
+= 7부 — 품질 관리
+
+include::manual/quality/evaluation.adoc[]
+
+include::manual/quality/feedback.adoc[]
+
+= 8부 — 검색 튜닝
+
+include::manual/tuning/synonyms.adoc[]
+
+include::manual/tuning/boosting.adoc[]
+
+= 9부 — 운영 관리
+
+include::manual/ops/users.adoc[]
+
+include::manual/ops/api-keys.adoc[]
+
+include::manual/ops/monitoring.adoc[]
+
+include::manual/ops/backup.adoc[]
+
+include::manual/appendix/api.adoc[]
+
+include::manual/appendix/troubleshooting.adoc[]
+
+include::manual/appendix/glossary.adoc[]

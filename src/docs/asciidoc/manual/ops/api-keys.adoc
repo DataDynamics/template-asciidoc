@@ -1,0 +1,29 @@
+[[ops-api-keys]]
+== API 키
+
+다른 시스템이 로그인 없이 {product-short} 의 검색 기능을 호출할 때 API 키를 씁니다.
+화면: menu:관리[API 키].
+
+[[ops-api-keys-issue]]
+=== 발급
+
+. btn:[API 키 발급]을 누릅니다.
+. 이름(용도), 역할, 만료일을 정합니다. 외부 연동에는 보통 *사용자* 역할이면 충분합니다.
+. 화면에 표시된 키를 바로 복사해 안전한 곳에 보관합니다.
+
+IMPORTANT: 키는 발급할 때 *한 번만* 보여 줍니다. 잃어버리면 새로 발급해야 합니다.
+
+[[ops-api-keys-use]]
+=== 사용 예
+
+[source,console,subs="+attributes"]
+----
+$ curl -H "Authorization: Bearer <API 키>" \
+       "{api-base}/search?q=연차&kb=인사규정"
+----
+
+[[ops-api-keys-revoke]]
+=== 폐기
+
+키가 노출되었거나 더 쓰지 않으면 btn:[폐기]를 누릅니다. 폐기한 키로 들어온 요청은 바로 거부됩니다.
+목록의 *마지막 사용* 열로 오래 쓰지 않은 키를 찾아 정리하십시오.

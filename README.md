@@ -42,12 +42,15 @@ Dependabot(`.github/dependabot.yml`)이 Gradle 플러그인과 GitHub Actions �
 ├── gradle/wrapper/             # Gradle Wrapper 설정 (버전, 체크섬)
 └── src/docs/
     ├── asciidoc/
-    │   ├── index.adoc          # 문서 헤더(속성)와 장 include 목록
+    │   ├── _attributes-ko.adoc # 모든 문서가 include 하는 공통 헤더 속성(목차, 섹션 번호, 한국어 캡션)
+    │   ├── index.adoc          # 템플릿 사용 가이드. 문서 헤더(속성)와 장 include 목록
+    │   ├── sample-manual.adoc  # 제품 매뉴얼 샘플(가상 제품). 9개 부(part)와 부록 include 목록
     │   ├── chapters/           # 장(chapter)별 파일. 2단계 제목(==)으로 시작
     │   │   ├── introduction.adoc
     │   │   ├── getting-started.adoc
     │   │   ├── writing-guide.adoc
     │   │   └── appendix.adoc
+    │   ├── manual/             # 매뉴얼 샘플의 장 파일. 부별 디렉터리(intro, install, kb, ...)로 나눔
     │   ├── images/             # 그림. 문서에서는 파일 이름만 적음 (:imagesdir: images)
     │   ├── examples/           # 코드 블록에 include 할 설정/소스 예제
     │   └── docinfo.html        # HTML 출력에만 덧붙는 스타일(한국어 글꼴)
@@ -65,17 +68,20 @@ Dependabot(`.github/dependabot.yml`)이 Gradle 플러그인과 GitHub Actions �
 
 생성 결과는 다음 위치에 만들어집니다.
 
-* HTML: `build/docs/asciidoc/index.html`
-* PDF: `build/docs/asciidocPdf/index.pdf`
+* HTML: `build/docs/asciidoc/index.html`, `build/docs/asciidoc/sample-manual.html`
+* PDF: `build/docs/asciidocPdf/index.pdf`, `build/docs/asciidocPdf/sample-manual.pdf`
 * 배포 ZIP: `build/distributions/<프로젝트명>-<버전>.zip`
 
 배포 ZIP 의 구성은 다음과 같습니다.
 
 ```
 reference/
-├── pdf/<프로젝트명>-reference.pdf
+├── pdf/
+│   ├── <프로젝트명>-reference.pdf
+│   └── sample-manual.pdf
 └── htmlsingle/
     ├── <프로젝트명>-reference.html
+    ├── sample-manual.html
     └── images/
 ```
 
@@ -101,6 +107,21 @@ HTML 또는 PDF만 따로 생성하려면 `./gradlew asciidoctor` 또는 `./grad
 2. `src/docs/asciidoc/chapters/appendix.adoc` 의 "변경 이력" 표 맨 아래에 새 버전, 날짜, 변경 내용을 한 줄 추가합니다.
    변경 이력은 문서 부록에 함께 실리므로 별도 CHANGELOG 파일은 두지 않습니다.
 3. 필요하면 `index.adoc` 의 `revremark`(예: 초안, 검토본, 확정본)를 바꿉니다.
+
+## 매뉴얼 샘플
+
+`sample-manual.adoc` 은 가상의 제품 "Lumen 지식 검색" 으로 큰 제품 매뉴얼을 구성하는 방법을 보여 주는 샘플입니다.
+제품명, 화면, 설정, 수치는 모두 예시입니다.
+
+* 여러 장을 묶는 **부(part)** 는 `sample-manual.adoc` 에 `= N부 — 제목` 1단계 제목으로 둡니다.
+* **장(chapter)** 은 `manual/<부 디렉터리>/<장>.adoc` 파일 하나에 `==` 2단계 제목으로 씁니다.
+* 부록은 `[appendix]` 를 붙인 장으로 마지막에 둡니다.
+* 제품명, 포트, URL 같은 반복 값은 문서 헤더의 속성(`{product}`, `{api-port}` 등)으로 한곳에서 관리합니다.
+  코드 블록에서 속성을 쓰려면 `subs="+attributes"` 를 붙입니다(`+` 를 빼면 콜아웃 등 기본 치환이 꺼집니다).
+* SVG 그림에 한글을 쓰면 `font-family` 에 PDF 테마의 본문 글꼴(`KaiGen Gothic KR`)을 먼저 적어야 PDF 에서 글자가 깨지지 않습니다.
+
+새 문서를 추가하려면 `src/docs/asciidoc/` 에 `.adoc` 파일을 만들고, 헤더에서 `include::_attributes-ko.adoc[]` 로 공통 속성을 가져온 뒤,
+`build.gradle` 의 `sources { include ... }` 목록(HTML, PDF 두 곳)에 파일 이름을 추가합니다.
 
 ## 새 장 추가하기
 

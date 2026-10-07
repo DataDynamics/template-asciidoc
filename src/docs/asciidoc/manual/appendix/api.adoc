@@ -1,0 +1,34 @@
+[appendix]
+[[appendix-api]]
+== REST API 요약
+
+모든 API 는 `{api-base}` 아래에 있으며, `Authorization: Bearer <API 키>` 헤더로 인증합니다(<<ops-api-keys>>).
+
+.주요 API (예시)
+[cols="1,2,3", options="header"]
+|===
+| 메서드 | 경로 | 설명
+
+| `GET` | `/search` | 검색. `q`(검색어), `kb`(지식베이스), `mode`(방식), `size`(개수)
+| `POST` | `/ask` | 어시스턴트 질문. 답변과 근거 문서 목록을 돌려줌
+| `POST` | `/documents` | 문서 올리기. `multipart/form-data`
+| `GET` | `+/documents/{id}+` | 문서 상태 조회
+| `DELETE` | `+/documents/{id}+` | 문서 삭제
+|===
+
+[source,json]
+.`GET /search` 응답 예
+----
+{
+  "query": "연차",
+  "total": 2,
+  "hits": [
+    {
+      "document": "인사규정.pdf",
+      "location": "제3장 휴가 > 제10조 연차휴가",
+      "snippet": "연차는 입사 1년 후 15일이 주어진다",
+      "score": 0.92
+    }
+  ]
+}
+----

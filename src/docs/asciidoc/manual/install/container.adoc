@@ -1,0 +1,46 @@
+[[install-container]]
+== 컨테이너로 설치하기
+
+운영 환경은 웹 콘솔, API 서버, 색인 노드, 저장소를 각각 컨테이너로 실행합니다.
+
+[[install-container-compose]]
+=== Compose 파일 준비
+
+[source,yaml,subs="+attributes"]
+.compose.yml
+----
+services:
+  lumen-api:
+    image: example/lumen-api:1.0
+    ports:
+      - "{api-port}:{api-port}"
+    volumes:
+      - ./lumen.yml:/etc/lumen/lumen.yml:ro   # <1>
+    depends_on: [lumen-store]
+  lumen-indexer:
+    image: example/lumen-indexer:1.0
+    deploy:
+      replicas: 2                              # <2>
+  lumen-store:
+    image: example/lumen-store:1.0
+    volumes:
+      - lumen-data:/var/lib/lumen              # <3>
+volumes:
+  lumen-data:
+----
+<1> 설정 파일을 읽기 전용으로 연결합니다. 내용은 <<install-config>> 를 참고하십시오.
+<2> 색인 노드 수입니다. 문서가 많으면 늘립니다.
+<3> 원본 문서와 색인이 저장되는 볼륨입니다. 반드시 백업 대상에 포함합니다.
+
+[[install-container-run]]
+=== 실행과 확인
+
+[source,console]
+----
+$ docker compose up -d
+$ docker compose ps          # 모든 서비스가 running 인지 확인
+----
+
+설치가 끝나면 관리자 계정으로 로그인해 <<ops-users>> 에서 사용자를 추가합니다.
+
+CAUTION: 처음 로그인하면 관리자 비밀번호를 반드시 바꾸십시오.
